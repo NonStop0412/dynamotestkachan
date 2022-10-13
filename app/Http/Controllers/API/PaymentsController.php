@@ -11,16 +11,16 @@ class PaymentsController extends BaseController
     public function create(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'amount' => 'required|integer',
-            'recipient_account_id' => 'required|integer',
+            'amount' => 'required|numeric',
+            'recipient_account_id' => 'required|integer|exists:App\Models\User,id',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $status = 'ERROR';
-        $user =  auth('api')->user();
+        $user = auth('api')->user();
 
         $payment = Payment::create([
             'sender_account_id' => $user->id,
@@ -28,7 +28,7 @@ class PaymentsController extends BaseController
             'amount' => $request->amount
         ]);
 
-        if($payment) {
+        if ($payment instanceof Payment) {
             $status = 'OK';
         }
 

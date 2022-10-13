@@ -5,7 +5,7 @@ Author: Artem Kachan
 * PHP 7.4;
 * Laravel 8;
 * MySQL;
-* OpenServer.
+* Nginx.
 
 ## Description
 How to use:

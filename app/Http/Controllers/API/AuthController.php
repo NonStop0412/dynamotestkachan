@@ -20,14 +20,16 @@ class AuthController extends BaseController
             'c_password' => 'required|same:password',
         ]);
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             return $this->sendError('Validation Error.', $validator->errors());
         }
 
         $input = $request->all();
         $input['password'] = bcrypt($input['password']);
         $user = User::create($input);
-        $user->balance = 10;
+        $balance = 10.55;
+        $user->balance = $balance;
+        $user->save();
 
         $success = [
             'account_id' => $user->id,
@@ -42,13 +44,13 @@ class AuthController extends BaseController
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
-           'email' => 'required',
+           'email' => 'required|email',
            'password' => 'required|string'
         ]);
 
         $credentials = request(['email', 'password']);
 
-        if(!Auth::attempt($credentials)) {
+        if (!Auth::attempt($credentials)) {
             return $this->sendError('Invalid email or password', $validator->errors());
         }
 

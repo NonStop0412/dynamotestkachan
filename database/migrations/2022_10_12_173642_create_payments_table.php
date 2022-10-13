@@ -17,9 +17,8 @@ class CreatePaymentsTable extends Migration
             $table->id();
             $table->unsignedBigInteger('sender_account_id');
             $table->unsignedBigInteger('recipient_account_id');
-            $table->integer('amount');
+            $table->double('amount', 8, 2)->default(0,00);
             $table->timestamps();
-
             $table->foreign('sender_account_id')->references('id')->on('users');
             $table->foreign('recipient_account_id')->references('id')->on('users');
         });
